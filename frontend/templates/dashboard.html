@@ -123,10 +123,10 @@
 </div>
 <div class="hidden md:flex items-center h-full space-x-6">
 <nav class="flex h-full">
-<a onclick="triggerNav('telemetry')" class="flex items-center h-full px-4 text-primary font-bold border-b-2 border-primary pb-1 cursor-pointer">LIVE</a>
-<a onclick="triggerNav('archive')" class="flex items-center h-full px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer">HISTORY</a>
-<a onclick="triggerNav('scenarios')" class="flex items-center h-full px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer">SCENARIOS</a>
-<a class="flex items-center h-full px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer">ALERTS</a>
+<a onclick="triggerNav('telemetry')" class="flex items-center h-full px-4 text-primary font-bold border-b-2 border-primary cursor-pointer hover:bg-surface-container-high transition-colors">LIVE</a>
+<a onclick="triggerNav('archive')" class="flex items-center h-full px-4 text-on-surface-variant hover:text-primary hover:bg-surface-container-high hover:border-b-2 hover:border-primary-container transition-all cursor-pointer">HISTORY</a>
+<a onclick="triggerNav('scenarios')" class="flex items-center h-full px-4 text-on-surface-variant hover:text-primary hover:bg-surface-container-high hover:border-b-2 hover:border-primary-container transition-all cursor-pointer">SCENARIOS</a>
+<a class="flex items-center h-full px-4 text-on-surface-variant hover:text-error hover:bg-surface-container-high hover:border-b-2 hover:border-error transition-all cursor-pointer">ALERTS</a>
 </nav>
 </div>
 <div class="flex items-center space-x-4">
@@ -179,9 +179,10 @@
 </a>
 </div>
 <div class="px-container-padding py-4 border-t-2 border-outline-variant">
-<button onclick="document.querySelector('.hidden-run-btn button').click()" class="w-full h-touch-target bg-primary-container text-secondary font-label-caps text-label-caps flex items-center justify-center hover:bg-[#345baf] transition-colors cursor-pointer">
-                    RUN SIMULATION
-                </button>
+<button onclick="document.querySelector('.hidden-run-btn button').click()" class="relative w-full h-touch-target bg-primary-container text-secondary font-label-caps text-label-caps flex items-center justify-center overflow-hidden group cursor-pointer border-2 border-transparent hover:border-primary hover:shadow-[0_0_15px_rgba(177,197,255,0.4)] transition-all duration-300">
+    <span class="relative z-10 transition-colors duration-300 group-hover:text-on-primary">RUN SIMULATION</span>
+    <div class="absolute inset-0 h-full w-0 bg-primary transition-all duration-300 ease-out group-hover:w-full"></div>
+</button>
 </div>
 </nav>
 <!-- Main Content Area -->
@@ -217,13 +218,34 @@
 </div>
 </div>
 <!-- Operational State Tile -->
-<div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col">
+<div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col hover:border-primary transition-colors duration-300">
 <div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-2">
 <span class="font-label-caps text-label-caps text-on-surface-variant">OPERATIONAL STATE</span>
 <span class="material-symbols-outlined text-on-surface-variant" data-icon="thermostat">thermostat</span>
 </div>
 <div class="flex flex-col pt-2">
     {{ embed(roots.control_sliders) }}
+</div>
+</div>
+<!-- Climate Metrics Tile -->
+<div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col hover:border-secondary-fixed transition-colors duration-300">
+<div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CLIMATE METRICS</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="air">air</span>
+</div>
+<div class="flex flex-col space-y-3 pt-2">
+<div class="flex justify-between items-end group cursor-pointer">
+<span class="font-data-sm text-data-sm text-on-surface-variant group-hover:text-primary transition-colors">AVG TEMP</span>
+<span class="font-data-lg text-data-lg text-secondary group-hover:text-primary transition-colors">32.4°C</span>
+</div>
+<div class="flex justify-between items-end group cursor-pointer">
+<span class="font-data-sm text-data-sm text-on-surface-variant group-hover:text-secondary-fixed transition-colors">HUMIDITY</span>
+<span class="font-data-lg text-data-lg text-secondary group-hover:text-secondary-fixed transition-colors">78%</span>
+</div>
+<div class="flex justify-between items-end group cursor-pointer">
+<span class="font-data-sm text-data-sm text-on-surface-variant group-hover:text-error transition-colors">WIND GUST</span>
+<span class="font-data-lg text-data-lg text-error group-hover:text-error transition-colors">45 km/h</span>
+</div>
 </div>
 </div>
 <!-- Datacube Assimilation Tile -->
@@ -233,7 +255,7 @@
 <span class="material-symbols-outlined text-on-surface-variant" data-icon="database">database</span>
 </div>
 <div class="flex-1 flex flex-col justify-center items-center">
-<span class="font-data-lg text-data-lg text-secondary mb-1">{{ embed(roots.peak_intensity) }}</span>
+<span class="font-data-lg text-data-lg text-secondary mb-1 truncate max-w-full" title="{{ embed(roots.peak_intensity) }}">{{ embed(roots.peak_intensity) }}</span>
 <span class="font-data-sm text-data-sm text-on-surface-variant">MAX INTENSITY</span>
 <div class="w-full h-4 border-2 border-outline-variant mt-4 bg-surface relative">
 <div class="absolute top-0 left-0 h-full bg-primary" style="width: 78%;"></div>
@@ -253,8 +275,8 @@
 <div class="w-full h-1 bg-outline-variant absolute top-1/2 transform -translate-y-1/2"></div>
 <!-- Played Track -->
 <div class="w-1/3 h-1 bg-primary absolute top-1/2 transform -translate-y-1/2 left-0"></div>
-<!-- Scrubber Thumb (No skeuomorphism, just a rigid block) -->
-<div class="w-4 h-full bg-primary border-2 border-secondary absolute left-1/3 cursor-pointer"></div>
+<!-- Scrubber Thumb (with micro-animation glow) -->
+<div class="w-4 h-full bg-primary border-2 border-secondary absolute left-1/3 cursor-pointer hover:bg-secondary hover:shadow-[0_0_15px_rgba(177,197,255,0.8)] transition-all duration-300"></div>
 <!-- Tick Marks -->
 <div class="absolute w-full flex justify-between top-full mt-1">
 <span class="font-data-sm text-data-sm text-outline">T-12H</span>
@@ -266,8 +288,19 @@
 </div>
 
 <!-- Modals & Hidden Nodes -->
-<div class="absolute top-4 right-4 z-50 pointer-events-none">
-    {{ embed(roots.alert_modal) }}
+<div class="absolute top-16 right-4 w-80 z-50 pointer-events-none flex flex-col gap-2">
+    <!-- Static Preview Alert (NASA styling) -->
+    <div class="bg-error-container/90 border-l-4 border-error p-3 shadow-[0_0_15px_rgba(255,180,171,0.3)] backdrop-blur-md pointer-events-auto flex items-start space-x-3 transform transition-transform duration-300 hover:-translate-x-2 cursor-pointer">
+        <span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+        <div class="flex flex-col">
+            <span class="font-label-caps text-error font-bold">CRITICAL ANOMALY</span>
+            <span class="font-data-sm text-on-error-container text-sm">Rapid cyclogenesis detected in Bay of Bengal (T-04H).</span>
+        </div>
+    </div>
+    <!-- Backend dynamic alerts -->
+    <div class="pointer-events-auto">
+        {{ embed(roots.alert_modal) }}
+    </div>
 </div>
 {{ embed(roots.loading_overlay) }}
 <div style="display: none;">
@@ -294,6 +327,20 @@
         }
         setInterval(updateClock, 1000);
         updateClock();
+</script>
+<script>
+    // Local Preview Cleanup: Hide raw Jinja tags when opening file directly in browser
+    if (window.location.protocol === 'file:') {
+        document.addEventListener("DOMContentLoaded", function() {
+            const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+            let n;
+            while(n = walk.nextNode()) {
+                if (n.nodeValue.includes('{') && n.nodeValue.includes('}')) {
+                    n.nodeValue = n.nodeValue.replace(/\{[%\{].*?[%\}]\}/g, '');
+                }
+            }
+        });
+    }
 </script>
 
 </div>
