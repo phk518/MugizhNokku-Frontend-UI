@@ -524,14 +524,8 @@
             if (mapContainer && typeof Cesium !== 'undefined') {
                 mapContainer.innerHTML = ''; // Clear Jinja text
                 
-                // Initialize Viewer with Guaranteed OpenStreetMap (No CORS/Token issues)
-                const osmProvider = new Cesium.UrlTemplateImageryProvider({
-                    url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    credit: 'Map data © OpenStreetMap contributors'
-                });
-                
+                // Initialize Viewer using default Cesium base layer to guarantee globe rendering
                 const viewer = new Cesium.Viewer('mock-map-container', {
-                    imageryProvider: osmProvider,
                     baseLayerPicker: false,
                     timeline: false,
                     animation: false,
@@ -542,15 +536,18 @@
                     sceneModePicker: false
                 });
 
-                // Use GPU Shaders to convert standard OSM into a "Dark Matter" aesthetic
-                const baseLayer = viewer.imageryLayers.get(0);
-                baseLayer.brightness = 0.15;
-                baseLayer.contrast = 1.4;
-                baseLayer.saturation = 0.0;
-                baseLayer.gamma = 0.8;
-                
-                // Hide the ugly Cesium Ion watermark since we are fully open-source
-                viewer.cesiumWidget.creditContainer.style.display = 'none';
+                // Apply Dark Matter shaders to default imagery
+                try {
+                    const baseLayer = viewer.imageryLayers.get(0);
+                    if (baseLayer) {
+                        baseLayer.brightness = 0.15;
+                        baseLayer.contrast = 1.4;
+                        baseLayer.saturation = 0.0;
+                        baseLayer.gamma = 0.8;
+                    }
+                } catch (e) {
+                    console.error("Could not apply shaders", e);
+                }
                 
                 // Cyclone (Warning Red)
                 viewer.entities.add({
