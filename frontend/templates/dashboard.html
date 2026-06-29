@@ -120,10 +120,11 @@
 <header class="flex justify-between items-center w-full px-container-padding h-touch-target bg-surface dark:bg-surface border-b-2 border-outline-variant shrink-0">
 <div class="flex items-center space-x-4">
 <span class="font-display-md text-display-md font-bold text-primary dark:text-primary">AERO-CLIMATE MONITOR</span>
+<span class="font-label-caps text-on-surface-variant hidden md:block">AI-POWERED DIGITAL TWIN</span>
 </div>
 <div class="hidden md:flex items-center h-full space-x-6">
 <nav class="flex h-full">
-<a onclick="triggerNav('telemetry')" class="flex items-center h-full px-4 text-primary font-bold border-b-2 border-primary cursor-pointer hover:bg-surface-container-high transition-colors">LIVE</a>
+<a onclick="triggerNav('telemetry')" class="flex items-center h-full px-4 text-primary font-bold border-b-2 border-primary cursor-pointer hover:bg-surface-container-high transition-colors">DASHBOARD</a>
 <a onclick="triggerNav('archive')" class="flex items-center h-full px-4 text-on-surface-variant hover:text-primary hover:bg-surface-container-high hover:border-b-2 hover:border-primary-container transition-all cursor-pointer">HISTORY</a>
 <a onclick="triggerNav('scenarios')" class="flex items-center h-full px-4 text-on-surface-variant hover:text-primary hover:bg-surface-container-high hover:border-b-2 hover:border-primary-container transition-all cursor-pointer">SCENARIOS</a>
 <a class="flex items-center h-full px-4 text-on-surface-variant hover:text-error hover:bg-surface-container-high hover:border-b-2 hover:border-error transition-all cursor-pointer">ALERTS</a>
@@ -134,185 +135,334 @@
 <span class="font-data-sm text-data-sm text-on-surface-variant">UTC</span>
 <span class="font-data-sm text-data-sm text-on-surface" id="utc-clock">00:00:00</span>
 </div>
-<div class="bg-secondary-fixed-dim text-on-secondary-fixed px-2 py-1 font-label-caps text-label-caps uppercase border-2 border-secondary-fixed-dim">
-                [ NOMINAL ]
-            </div>
-<button class="h-touch-target w-touch-target flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-</button>
-<button class="h-touch-target w-touch-target flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined" data-icon="help">help</span>
-</button>
+<div class="bg-[#003737] text-secondary-fixed px-3 py-1 font-label-caps text-label-caps uppercase border-2 border-secondary-fixed-dim flex items-center space-x-2">
+    <span class="material-symbols-outlined text-[14px]">check_circle</span>
+    <span>NOMINAL</span>
+</div>
 </div>
 </header>
 <div class="flex flex-1 overflow-hidden">
 <!-- SideNavBar -->
 <nav class="hidden md:flex flex-col h-full w-64 bg-surface-container dark:bg-surface-container border-r-2 border-outline-variant py-grid-unit shrink-0">
 <div class="px-container-padding mb-4">
-<h2 class="font-headline-sm text-headline-sm text-on-surface">TELEMETRY SOURCES</h2>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">DATA SOURCES</h2>
 <p class="font-label-caps text-label-caps text-on-surface-variant">MISSION CONTROL HUB</p>
 </div>
 <div class="flex-1 flex flex-col space-y-tile-gap">
-<a onclick="document.querySelector('.hidden-satellite-btn button').click(); return false;" class="flex items-center h-touch-target px-container-padding text-primary font-bold border-l-2 border-primary bg-surface-container-highest cursor-pointer">
-<span class="material-symbols-outlined mr-3" data-icon="satellite_alt">satellite_alt</span>
-<span class="font-label-caps text-label-caps">SATELLITE</span>
+<!-- IMD Gridded Rainfall -->
+<a onclick="document.querySelector('.hidden-imd-rain-btn button').click(); return false;" class="flex items-center h-touch-target px-container-padding text-primary font-bold border-l-2 border-primary bg-surface-container-highest cursor-pointer hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined mr-3" data-icon="rainy">rainy</span>
+<div class="flex flex-col">
+    <span class="font-label-caps text-label-caps">IMD RAINFALL</span>
+    <span class="text-[10px] text-on-surface-variant font-data-sm">Gridded Network</span>
+</div>
 </a>
-<a onclick="document.querySelector('.hidden-radar-btn button').click(); return false;" class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:bg-surface-container-high border-l-2 border-transparent cursor-pointer">
-<span class="material-symbols-outlined mr-3" data-icon="radar">radar</span>
-<span class="font-label-caps text-label-caps">RADAR</span>
+<!-- IMD Temperature -->
+<a onclick="document.querySelector('.hidden-imd-temp-btn button').click(); return false;" class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:text-primary hover:bg-surface-container-high border-l-2 border-transparent hover:border-primary-container transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="device_thermostat">device_thermostat</span>
+<div class="flex flex-col">
+    <span class="font-label-caps text-label-caps">IMD TEMPERATURE</span>
+    <span class="text-[10px] text-on-surface-variant font-data-sm">Max/Min Stations</span>
+</div>
 </a>
-<a class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:bg-surface-container-high border-l-2 border-transparent" href="#">
-<span class="material-symbols-outlined mr-3" data-icon="sensors">sensors</span>
-<span class="font-label-caps text-label-caps">IOT SENSORS</span>
+<!-- INSAT Land Surface Temp (LST) -->
+<a onclick="document.querySelector('.hidden-insat-lst-btn button').click(); return false;" class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:text-secondary-fixed hover:bg-surface-container-high border-l-2 border-transparent hover:border-secondary-container transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="landscape">landscape</span>
+<div class="flex flex-col">
+    <span class="font-label-caps text-label-caps">INSAT LST</span>
+    <span class="text-[10px] text-on-surface-variant font-data-sm">Satellite Imagery</span>
+</div>
 </a>
-<a class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:bg-surface-container-high border-l-2 border-transparent" href="#">
-<span class="material-symbols-outlined mr-3" data-icon="developer_board">developer_board</span>
-<span class="font-label-caps text-label-caps">HARDWARE</span>
-</a>
-<a class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:bg-surface-container-high border-l-2 border-transparent" href="#">
-<span class="material-symbols-outlined mr-3" data-icon="monitor_heart">monitor_heart</span>
-<span class="font-label-caps text-label-caps">SYSTEM HEALTH</span>
-</a>
-<a class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:bg-surface-container-high border-l-2 border-transparent" href="#">
-<span class="material-symbols-outlined mr-3" data-icon="terminal">terminal</span>
-<span class="font-label-caps text-label-caps">LOGS</span>
+<!-- INSAT Sea Surface Temp (SST) -->
+<a onclick="document.querySelector('.hidden-insat-sst-btn button').click(); return false;" class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:text-secondary-fixed hover:bg-surface-container-high border-l-2 border-transparent hover:border-secondary-container transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="water">water</span>
+<div class="flex flex-col">
+    <span class="font-label-caps text-label-caps">INSAT SST</span>
+    <span class="text-[10px] text-on-surface-variant font-data-sm">Ocean & Marine Data</span>
+</div>
 </a>
 </div>
 <div class="px-container-padding py-4 border-t-2 border-outline-variant">
-<button onclick="document.querySelector('.hidden-run-btn button').click()" class="relative w-full h-touch-target bg-primary-container text-secondary font-label-caps text-label-caps flex items-center justify-center overflow-hidden group cursor-pointer border-2 border-transparent hover:border-primary hover:shadow-[0_0_15px_rgba(177,197,255,0.4)] transition-all duration-300">
-    <span class="relative z-10 transition-colors duration-300 group-hover:text-on-primary">RUN SIMULATION</span>
-    <div class="absolute inset-0 h-full w-0 bg-primary transition-all duration-300 ease-out group-hover:w-full"></div>
+<button class="relative w-full h-10 bg-transparent border-2 border-outline-variant text-on-surface-variant font-label-caps flex items-center justify-center overflow-hidden group cursor-pointer hover:border-primary hover:text-primary transition-all duration-300">
+    <span class="material-symbols-outlined mr-2 text-[14px]">settings</span>
+    <span>MANAGE SOURCES</span>
 </button>
 </div>
 </nav>
+
 <!-- Main Content Area -->
 <main class="flex-1 flex flex-col p-tile-gap gap-tile-gap overflow-hidden bg-background relative">
-<!-- Top Section: Map & Telemetry Panels -->
-<div class="flex-1 flex flex-col lg:flex-row gap-tile-gap min-h-0">
-<!-- Central Viewport: Deck.gl Map -->
-<div class="flex-1 border-2 border-outline-variant bg-surface relative overflow-hidden group flex flex-col">
-<div class="absolute top-2 left-2 z-10 bg-surface/80 p-2 border-2 border-outline-variant backdrop-blur-sm pointer-events-none">
-<span class="font-label-caps text-label-caps text-on-surface">PRECIPITATION INTENSITY [IND]</span>
-</div>
-<div class="flex-1 w-full relative z-0">
-    {{ embed(roots.map_canvas) }}
-</div>
-</div>
-<!-- Right Sidebar: Telemetry Panels Grid -->
-<div class="w-full lg:w-96 flex flex-col gap-tile-gap shrink-0">
-<!-- Hardware Telemetry Tile -->
-<div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col">
-<div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-2">
-<span class="font-label-caps text-label-caps text-on-surface-variant">HARDWARE TELEMETRY</span>
-<span class="material-symbols-outlined text-on-surface-variant" data-icon="developer_board">developer_board</span>
-</div>
-<div class="flex flex-col space-y-4">
-<div class="flex justify-between items-end">
-<span class="font-data-sm text-data-sm text-on-surface-variant">VRAM USAGE</span>
-<span class="font-data-lg text-data-lg text-secondary">82.4%</span>
-</div>
-<div class="flex justify-between items-end">
-<span class="font-data-sm text-data-sm text-on-surface-variant">LATENCY</span>
-<span class="font-data-lg text-data-lg text-secondary">42ms</span>
-</div>
-</div>
-</div>
-<!-- Operational State Tile -->
-<div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col hover:border-primary transition-colors duration-300">
-<div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-2">
-<span class="font-label-caps text-label-caps text-on-surface-variant">OPERATIONAL STATE</span>
-<span class="material-symbols-outlined text-on-surface-variant" data-icon="thermostat">thermostat</span>
-</div>
-<div class="flex flex-col pt-2">
-    {{ embed(roots.control_sliders) }}
-</div>
-</div>
-<!-- Climate Metrics Tile -->
-<div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col hover:border-secondary-fixed transition-colors duration-300">
-<div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-2">
-<span class="font-label-caps text-label-caps text-on-surface-variant">CLIMATE METRICS</span>
-<span class="material-symbols-outlined text-on-surface-variant" data-icon="air">air</span>
-</div>
-<div class="flex flex-col space-y-3 pt-2">
-<div class="flex justify-between items-end group cursor-pointer">
-<span class="font-data-sm text-data-sm text-on-surface-variant group-hover:text-primary transition-colors">AVG TEMP</span>
-<span class="font-data-lg text-data-lg text-secondary group-hover:text-primary transition-colors">32.4°C</span>
-</div>
-<div class="flex justify-between items-end group cursor-pointer">
-<span class="font-data-sm text-data-sm text-on-surface-variant group-hover:text-secondary-fixed transition-colors">HUMIDITY</span>
-<span class="font-data-lg text-data-lg text-secondary group-hover:text-secondary-fixed transition-colors">78%</span>
-</div>
-<div class="flex justify-between items-end group cursor-pointer">
-<span class="font-data-sm text-data-sm text-on-surface-variant group-hover:text-error transition-colors">WIND GUST</span>
-<span class="font-data-lg text-data-lg text-error group-hover:text-error transition-colors">45 km/h</span>
-</div>
-</div>
-</div>
-<!-- Datacube Assimilation Tile -->
-<div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col flex-1">
-<div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-2">
-<span class="font-label-caps text-label-caps text-on-surface-variant">DATACUBE ASSIMILATION</span>
-<span class="material-symbols-outlined text-on-surface-variant" data-icon="database">database</span>
-</div>
-<div class="flex-1 flex flex-col justify-center items-center">
-<span class="font-data-lg text-data-lg text-secondary mb-1 truncate max-w-full" title="{{ embed(roots.peak_intensity) }}">{{ embed(roots.peak_intensity) }}</span>
-<span class="font-data-sm text-data-sm text-on-surface-variant">MAX INTENSITY</span>
-<div class="w-full h-4 border-2 border-outline-variant mt-4 bg-surface relative">
-<div class="absolute top-0 left-0 h-full bg-primary" style="width: 78%;"></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Bottom: Mission Timeline Scrubber -->
-<div class="h-24 bg-surface-container border-2 border-outline-variant shrink-0 flex flex-col p-container-padding">
-<div class="flex justify-between items-center mb-2">
-<span class="font-label-caps text-label-caps text-on-surface-variant">MISSION TIMELINE [T-MINUS]</span>
-<span class="font-data-sm text-data-sm text-on-surface-variant">{{ embed(roots.prediction_window) }}</span>
-</div>
-<div class="relative w-full h-8 flex items-center">
-<!-- Timeline Track -->
-<div class="w-full h-1 bg-outline-variant absolute top-1/2 transform -translate-y-1/2"></div>
-<!-- Played Track -->
-<div class="w-1/3 h-1 bg-primary absolute top-1/2 transform -translate-y-1/2 left-0"></div>
-<!-- Scrubber Thumb (with micro-animation glow) -->
-<div class="w-4 h-full bg-primary border-2 border-secondary absolute left-1/3 cursor-pointer hover:bg-secondary hover:shadow-[0_0_15px_rgba(177,197,255,0.8)] transition-all duration-300"></div>
-<!-- Tick Marks -->
-<div class="absolute w-full flex justify-between top-full mt-1">
-<span class="font-data-sm text-data-sm text-outline">T-12H</span>
-<span class="font-data-sm text-data-sm text-outline">T-08H</span>
-<span class="font-data-sm text-data-sm text-primary">T-04H</span>
-<span class="font-data-sm text-data-sm text-outline">T-00H</span>
-</div>
-</div>
-</div>
+    
+    <!-- Top Section: Map & Right Sidebar -->
+    <div class="flex-1 flex flex-col lg:flex-row gap-tile-gap min-h-0">
+        
+        <!-- Central Viewport: Deck.gl Map -->
+        <div class="flex-1 border-2 border-outline-variant bg-surface relative overflow-hidden flex flex-col">
+            <!-- Map Layer -->
+            <div class="absolute inset-0 z-0">
+                {{ embed(roots.map_canvas) }}
+            </div>
+            
+            <!-- Top Floating Controls -->
+            <div class="absolute top-4 left-4 right-4 z-10 flex justify-between pointer-events-none">
+                <div class="bg-surface-container/90 border-2 border-outline-variant px-3 py-2 flex items-center space-x-2 backdrop-blur-sm pointer-events-auto">
+                    <span class="font-label-caps text-on-surface uppercase">INDIA CLIMATE DIGITAL TWIN</span>
+                    <span class="material-symbols-outlined text-outline text-sm" data-icon="info">info</span>
+                </div>
+                <div class="flex space-x-2 pointer-events-auto">
+                    <div class="bg-surface-container/90 border-2 border-outline-variant px-3 py-2 flex items-center space-x-3 backdrop-blur-sm">
+                        <span class="font-label-caps text-on-surface-variant">MODEL RESOLUTION</span>
+                        <div class="flex space-x-2">
+                            <span class="text-data-sm text-on-surface-variant cursor-pointer hover:text-primary transition-colors">12 km</span>
+                            <span class="text-data-sm text-primary font-bold cursor-pointer border-b border-primary">4 km</span>
+                            <span class="text-data-sm text-on-surface-variant cursor-pointer hover:text-primary transition-colors">1 km</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<!-- Modals & Hidden Nodes -->
-<div class="absolute top-16 right-4 w-80 z-50 pointer-events-none flex flex-col gap-2">
-    <!-- Static Preview Alert (NASA styling) -->
-    <div class="bg-error-container/90 border-l-4 border-error p-3 shadow-[0_0_15px_rgba(255,180,171,0.3)] backdrop-blur-md pointer-events-auto flex items-start space-x-3 transform transition-transform duration-300 hover:-translate-x-2 cursor-pointer">
-        <span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
-        <div class="flex flex-col">
-            <span class="font-label-caps text-error font-bold">CRITICAL ANOMALY</span>
-            <span class="font-data-sm text-on-error-container text-sm">Rapid cyclogenesis detected in Bay of Bengal (T-04H).</span>
+            <!-- Bottom Floating Timeline & Indicators -->
+            <div class="absolute bottom-4 left-4 right-4 z-10 flex flex-col space-y-2 pointer-events-none">
+                <!-- Timeline Scrubber -->
+                <div class="bg-surface-container/90 border-2 border-outline-variant p-3 backdrop-blur-sm pointer-events-auto flex flex-col w-[400px]">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex flex-col">
+                            <span class="font-label-caps text-on-surface-variant text-[10px]">TIME</span>
+                            <span class="font-data-sm text-on-surface">{{ embed(roots.prediction_window) }}</span>
+                        </div>
+                        <div class="flex space-x-3 text-primary">
+                            <span class="material-symbols-outlined cursor-pointer hover:text-secondary-fixed text-lg">fast_rewind</span>
+                            <span class="material-symbols-outlined cursor-pointer hover:text-secondary-fixed text-lg">play_arrow</span>
+                            <span class="material-symbols-outlined cursor-pointer hover:text-secondary-fixed text-lg">fast_forward</span>
+                        </div>
+                    </div>
+                    <div class="relative w-full h-4 flex items-center mt-2">
+                        <div class="w-full h-1 bg-outline-variant absolute top-1/2 transform -translate-y-1/2"></div>
+                        <div class="w-1/2 h-1 bg-primary absolute top-1/2 transform -translate-y-1/2 left-0"></div>
+                        <div class="w-3 h-3 bg-secondary rounded-full absolute left-1/2 transform -translate-x-1/2 shadow-[0_0_10px_rgba(177,197,255,0.8)] cursor-pointer"></div>
+                    </div>
+                    <div class="flex justify-between mt-1 text-[10px] text-outline font-data-sm">
+                        <span>-6H</span><span>-3H</span><span class="text-primary font-bold">NOW</span><span>+3H</span><span>+6H</span>
+                    </div>
+                </div>
+                
+                <!-- Hazard Indicators Ribbon -->
+                <div class="flex space-x-2 pointer-events-auto">
+                    <!-- Cyclone Watch -->
+                    <div class="bg-surface-container/90 border-l-4 border-primary px-3 py-2 flex items-center space-x-3 backdrop-blur-sm cursor-pointer hover:bg-surface-container-highest transition-colors">
+                        <div class="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-sm">cyclone</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-label-caps text-on-surface-variant text-[10px]">CYCLONE WATCH</span>
+                            <span class="font-data-sm text-primary">1 Active</span>
+                            <span class="text-[10px] text-outline">Bay of Bengal</span>
+                        </div>
+                    </div>
+                    <!-- Heatwave -->
+                    <div class="bg-surface-container/90 border-l-4 border-tertiary px-3 py-2 flex items-center space-x-3 backdrop-blur-sm cursor-pointer hover:bg-surface-container-highest transition-colors">
+                        <div class="h-8 w-8 rounded-full bg-tertiary/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-tertiary text-sm">local_fire_department</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-label-caps text-on-surface-variant text-[10px]">HEATWAVE ZONES</span>
+                            <span class="font-data-sm text-tertiary">12 Districts</span>
+                            <span class="text-[10px] text-outline">High Alert</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Sidebar: Analytics -->
+        <div class="w-full lg:w-80 flex flex-col gap-tile-gap shrink-0 overflow-y-auto overflow-x-hidden">
+            <!-- Early Warning Alerts -->
+            <div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col">
+                <div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-3">
+                    <span class="font-label-caps text-on-surface-variant">EARLY WARNING ALERTS</span>
+                    <span class="text-[10px] text-primary cursor-pointer hover:underline uppercase">View All ></span>
+                </div>
+                <div class="bg-error-container/20 border-2 border-error/50 p-3 flex items-start space-x-3 cursor-pointer hover:bg-error-container/40 transition-colors">
+                    <span class="material-symbols-outlined text-error text-lg" data-icon="warning">warning</span>
+                    <div class="flex flex-col">
+                        <span class="font-label-caps text-error font-bold mb-1">CRITICAL ANOMALY</span>
+                        <span class="font-data-sm text-on-surface text-xs leading-relaxed mb-2">Rapid cyclogenesis detected in Bay of Bengal (T-04H).</span>
+                        <span class="text-[10px] text-outline">26 May 2025 13:20 IST</span>
+                    </div>
+                </div>
+                <!-- Hidden Jinja hook for real alerts -->
+                <div class="hidden">{{ embed(roots.alert_modal) }}</div>
+            </div>
+
+            <!-- Climate Metrics -->
+            <div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col hover:border-primary/50 transition-colors duration-300">
+                <div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-3">
+                    <span class="font-label-caps text-on-surface-variant">CLIMATE METRICS (INDIA)</span>
+                    <span class="text-[10px] text-primary cursor-pointer hover:underline uppercase">(Live) ></span>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex items-start space-x-2 group cursor-pointer">
+                        <span class="material-symbols-outlined text-error text-sm mt-1">device_thermostat</span>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-on-surface-variant">AVERAGE TEMP</span>
+                            <span class="font-data-lg text-on-surface">32.4 °C</span>
+                            <span class="text-[10px] text-error">+1.2 °C</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-2 group cursor-pointer">
+                        <span class="material-symbols-outlined text-secondary-fixed text-sm mt-1">water_drop</span>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-on-surface-variant">HUMIDITY</span>
+                            <span class="font-data-lg text-on-surface">78%</span>
+                            <span class="text-[10px] text-primary">+6%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-2 group cursor-pointer">
+                        <span class="material-symbols-outlined text-outline text-sm mt-1">air</span>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-on-surface-variant">WIND SPEED</span>
+                            <span class="font-data-lg text-on-surface">12.6</span>
+                            <span class="text-[10px] text-outline">km/h</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-2 group cursor-pointer">
+                        <span class="material-symbols-outlined text-primary text-sm mt-1">rainy</span>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-on-surface-variant">RAINFALL (24H)</span>
+                            <span class="font-data-lg text-on-surface">45.2</span>
+                            <span class="text-[10px] text-error">+18%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Confidence -->
+            <div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col">
+                <div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-3">
+                    <span class="font-label-caps text-on-surface-variant">MODEL CONFIDENCE</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Fake donut chart using CSS -->
+                    <div class="relative w-16 h-16 rounded-full border-4 border-surface-bright flex items-center justify-center shrink-0">
+                        <div class="absolute inset-0 rounded-full border-4 border-t-secondary-fixed border-r-secondary-fixed border-b-secondary-fixed border-l-transparent transform -rotate-45"></div>
+                        <span class="font-data-lg text-on-surface text-lg relative z-10">86%</span>
+                    </div>
+                    <div class="flex flex-col flex-1">
+                        <span class="font-label-caps text-secondary-fixed mb-1">High Confidence</span>
+                        <span class="text-[10px] text-on-surface-variant leading-tight">Based on data availability and model agreement</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Datacube Assimilation -->
+            <div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col flex-1 min-h-[120px]">
+                <div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-2">
+                    <span class="font-label-caps text-on-surface-variant">DATA ASSIMILATION</span>
+                    <span class="text-[10px] text-outline uppercase">LAST UPDATE: 13:35 IST</span>
+                </div>
+                <div class="flex flex-col space-y-2 mt-2">
+                    <div class="flex justify-between items-center border-b border-surface-bright pb-1">
+                        <span class="text-[10px] text-on-surface-variant">Observations</span>
+                        <span class="font-data-sm text-on-surface">1.2 M</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-surface-bright pb-1">
+                        <span class="text-[10px] text-on-surface-variant">Model Fields</span>
+                        <span class="font-data-sm text-on-surface">32</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-1">
+                        <span class="text-[10px] text-on-surface-variant">Latency</span>
+                        <span class="font-data-sm text-on-surface">~ 4 min</span>
+                    </div>
+                </div>
+                <div class="hidden">{{ embed(roots.peak_intensity) }}</div>
+            </div>
         </div>
     </div>
-    <!-- Backend dynamic alerts -->
-    <div class="pointer-events-auto">
-        {{ embed(roots.alert_modal) }}
+    
+    <!-- Bottom Section: Sectoral Impact Dashboard -->
+    <div class="bg-surface-container border-2 border-outline-variant shrink-0 flex flex-col p-container-padding">
+        <div class="flex justify-between items-center mb-3">
+            <span class="font-label-caps text-on-surface-variant">SECTORAL IMPACT DASHBOARD</span>
+            <span class="text-[10px] text-primary cursor-pointer hover:underline uppercase">View All Sectors ></span>
+        </div>
+        <!-- Impact Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <!-- Agriculture -->
+            <div class="bg-surface flex flex-col justify-between p-3 border-l-2 border-[#4caf50] cursor-pointer hover:bg-surface-bright transition-colors group">
+                <div class="flex items-center space-x-2 mb-2">
+                    <span class="material-symbols-outlined text-[#4caf50] text-sm">agriculture</span>
+                    <span class="font-label-caps text-on-surface text-[10px]">AGRICULTURE</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-on-surface-variant">Kharif Outlook</span>
+                    <span class="font-data-sm text-[#4caf50]">Favourable</span>
+                    <span class="text-[9px] text-outline mt-1">+8% vs last year</span>
+                </div>
+                <div class="hidden">{{ embed(roots.sector_agri) }}</div>
+            </div>
+            <!-- Water -->
+            <div class="bg-surface flex flex-col justify-between p-3 border-l-2 border-primary cursor-pointer hover:bg-surface-bright transition-colors group">
+                <div class="flex items-center space-x-2 mb-2">
+                    <span class="material-symbols-outlined text-primary text-sm">water_drop</span>
+                    <span class="font-label-caps text-on-surface text-[10px]">WATER RESOURCES</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-on-surface-variant">Reservoir Storage</span>
+                    <span class="font-data-sm text-primary">62%</span>
+                    <span class="text-[9px] text-outline mt-1">-6% vs last week</span>
+                </div>
+            </div>
+            <!-- Energy -->
+            <div class="bg-surface flex flex-col justify-between p-3 border-l-2 border-[#ff9800] cursor-pointer hover:bg-surface-bright transition-colors group">
+                <div class="flex items-center space-x-2 mb-2">
+                    <span class="material-symbols-outlined text-[#ff9800] text-sm">bolt</span>
+                    <span class="font-label-caps text-on-surface text-[10px]">ENERGY</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-on-surface-variant">Solar Potential</span>
+                    <span class="font-data-sm text-[#ff9800]">High</span>
+                    <span class="text-[9px] text-outline mt-1">+12% vs normal</span>
+                </div>
+            </div>
+            <!-- Health -->
+            <div class="bg-surface flex flex-col justify-between p-3 border-l-2 border-error cursor-pointer hover:bg-surface-bright transition-colors group">
+                <div class="flex items-center space-x-2 mb-2">
+                    <span class="material-symbols-outlined text-error text-sm">favorite</span>
+                    <span class="font-label-caps text-on-surface text-[10px]">HEALTH</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-on-surface-variant">Heat Stress Index</span>
+                    <span class="font-data-sm text-error">Severe</span>
+                    <span class="text-[9px] text-outline mt-1">12 Districts</span>
+                </div>
+            </div>
+            <!-- Urban -->
+            <div class="bg-surface flex flex-col justify-between p-3 border-l-2 border-[#9c27b0] cursor-pointer hover:bg-surface-bright transition-colors group">
+                <div class="flex items-center space-x-2 mb-2">
+                    <span class="material-symbols-outlined text-[#9c27b0] text-sm">location_city</span>
+                    <span class="font-label-caps text-on-surface text-[10px]">URBAN & INFRA</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-on-surface-variant">Flood Risk (Cities)</span>
+                    <span class="font-data-sm text-error">High</span>
+                    <span class="text-[9px] text-outline mt-1">3 Cities</span>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-{{ embed(roots.loading_overlay) }}
-<div style="display: none;">
-    {{ embed(roots.nav_archive_btn) }}
-    {{ embed(roots.nav_telemetry_btn) }}
-    {{ embed(roots.nav_predict_btn) }}
-    {{ embed(roots.nav_scenarios_btn) }}
-    {{ embed(roots.nav_layers_btn) }}
-    {{ embed(roots.nav_satellite_btn) }}
-    {{ embed(roots.nav_radar_btn) }}
-    {{ embed(roots.run_sim_btn) }}
-</div>
+    
+    {{ embed(roots.loading_overlay) }}
+    <div style="display: none;">
+        <span class="hidden-telemetry-btn">{{ embed(roots.nav_telemetry_btn) }}</span>
+        <span class="hidden-archive-btn">{{ embed(roots.nav_archive_btn) }}</span>
+        <span class="hidden-scenarios-btn">{{ embed(roots.nav_scenarios_btn) }}</span>
+        <span class="hidden-imd-rain-btn">{{ embed(roots.imd_rain_btn) }}</span>
+        <span class="hidden-imd-temp-btn">{{ embed(roots.imd_temp_btn) }}</span>
+        <span class="hidden-insat-lst-btn">{{ embed(roots.insat_lst_btn) }}</span>
+        <span class="hidden-insat-sst-btn">{{ embed(roots.insat_sst_btn) }}</span>
+        <span class="hidden-run-btn">{{ embed(roots.run_sim_btn) }}</span>
+        <span class="hidden-sliders">{{ embed(roots.control_sliders) }}</span>
+    </div>
 
 </main>
 </div>
