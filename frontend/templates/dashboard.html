@@ -524,9 +524,13 @@
             if (mapContainer && typeof Cesium !== 'undefined') {
                 mapContainer.innerHTML = ''; // Clear Jinja text
                 
-                // Initialize Viewer without default imagery or Ion token
+                // Initialize Viewer with Tokenless CartoDB Dark Matter
                 const viewer = new Cesium.Viewer('mock-map-container', {
-                    imageryProvider: false, 
+                    imageryProvider: new Cesium.UrlTemplateImageryProvider({
+                        url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                        subdomains: ['a', 'b', 'c', 'd'],
+                        credit: 'CartoDB'
+                    }),
                     baseLayerPicker: false,
                     timeline: false,
                     animation: false,
@@ -536,15 +540,6 @@
                     selectionIndicator: false,
                     sceneModePicker: false
                 });
-
-                // Inject Tokenless CartoDB Dark Matter Tileset
-                const cartoDark = new Cesium.ImageryLayer(
-                    new Cesium.UrlTemplateImageryProvider({
-                        url: 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
-                        credit: 'Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
-                    })
-                );
-                viewer.scene.imageryLayers.add(cartoDark);
                 
                 // Cyclone (Warning Red)
                 viewer.entities.add({
