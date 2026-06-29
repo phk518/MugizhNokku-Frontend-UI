@@ -524,8 +524,9 @@
             if (mapContainer && typeof Cesium !== 'undefined') {
                 mapContainer.innerHTML = ''; // Clear Jinja text
                 
-                // Initialize Viewer using default Cesium base layer to guarantee globe rendering
+                // Initialize Viewer as a pure mathematical globe (No external map tiles needed)
                 const viewer = new Cesium.Viewer('mock-map-container', {
+                    imageryProvider: false, // Disables Bing Maps / Ion requirements
                     baseLayerPicker: false,
                     timeline: false,
                     animation: false,
@@ -536,18 +537,8 @@
                     sceneModePicker: false
                 });
 
-                // Apply Dark Matter shaders to default imagery
-                try {
-                    const baseLayer = viewer.imageryLayers.get(0);
-                    if (baseLayer) {
-                        baseLayer.brightness = 0.15;
-                        baseLayer.contrast = 1.4;
-                        baseLayer.saturation = 0.0;
-                        baseLayer.gamma = 0.8;
-                    }
-                } catch (e) {
-                    console.error("Could not apply shaders", e);
-                }
+                // Paint the naked globe dark gray so it stands out against the starry sky
+                viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#1a1a1a');
                 
                 // Cyclone (Warning Red)
                 viewer.entities.add({
@@ -555,6 +546,7 @@
                     ellipse: {
                         semiMinorAxis: 400000.0,
                         semiMajorAxis: 400000.0,
+                        height: 0, // explicitly place on surface
                         material: Cesium.Color.fromCssColorString('#93000a').withAlpha(0.6),
                         outline: true,
                         outlineColor: Cesium.Color.fromCssColorString('#ffb4ab')
@@ -571,6 +563,7 @@
                             76.0, 22.0, 
                             70.0, 23.0
                         ]),
+                        height: 0, // explicitly place on surface
                         material: Cesium.Color.fromCssColorString('#ff9800').withAlpha(0.35),
                         outline: true,
                         outlineColor: Cesium.Color.fromCssColorString('#ff9800')
