@@ -98,8 +98,6 @@
             if(hiddenBtn) hiddenBtn.click();
         }
     </script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
         body {
             background-color: #131313;
@@ -216,7 +214,7 @@
         <!-- Central Viewport: Deck.gl Map -->
         <div class="flex-1 border-2 border-outline-variant bg-surface relative overflow-hidden flex flex-col">
             <!-- Map Layer -->
-            <div class="absolute inset-0 z-0" id="mock-map-container">
+            <div class="absolute inset-0 z-0">
                 {{ embed(roots.map_canvas) }}
             </div>
             
@@ -506,76 +504,16 @@
         setInterval(updateClock, 1000);
         updateClock();
 </script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    // Local Preview Cleanup & Mock Map: Only runs when opening file directly in browser
+    // Local Preview Cleanup: Hide raw Jinja tags when opening file directly in browser
     if (window.location.protocol === 'file:') {
         document.addEventListener("DOMContentLoaded", function() {
-            // Hide Jinja tags
             const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
             let n;
             while(n = walk.nextNode()) {
                 if (n.nodeValue.includes('{') && n.nodeValue.includes('}')) {
                     n.nodeValue = n.nodeValue.replace(/\{[%\{].*?[%\}]\}/g, '');
                 }
-            }
-            
-            // Inject Interactive Leaflet Map for Mockup
-            const mapContainer = document.getElementById('mock-map-container');
-            if (mapContainer) {
-                mapContainer.innerHTML = ''; // Clear Jinja text
-                const map = L.map('mock-map-container', {
-                    center: [22.0, 80.0],
-                    zoom: 4.5,
-                    zoomControl: false,
-                    attributionControl: false
-                });
-
-                // Dark mode tiles
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
-                    maxZoom: 19
-                }).addTo(map);
-
-                // PROJECTION 1: Cyclone Watch (Bay of Bengal) - Matches Bottom Left Hazard Ribbon
-                const cycloneOuter = L.circle([15.5, 89.0], {
-                    color: 'transparent', fillColor: '#00ffff', fillOpacity: 0.15, radius: 450000
-                }).addTo(map);
-                const cycloneInner = L.circle([15.5, 89.0], {
-                    color: '#ffb4ab', fillColor: '#93000a', fillOpacity: 0.7, radius: 100000
-                }).addTo(map);
-                cycloneInner.bindPopup("<b style='color:red;'>CRITICAL ANOMALY</b><br>Rapid cyclogenesis detected.<br>Bay of Bengal.");
-
-                // PROJECTION 2: Heatwave Zones (12 Districts) - Matches Health Sector & Hazard Ribbon
-                // Drawing a polygon over Rajasthan/Gujarat/MP
-                const heatwave = L.polygon([
-                    [28.0, 70.0], [29.0, 75.0], [26.0, 78.0], [22.0, 76.0], [23.0, 70.0]
-                ], {
-                    color: '#ff9800', fillColor: '#ff9800', fillOpacity: 0.35, weight: 2
-                }).addTo(map);
-                heatwave.bindPopup("<b style='color:#ff9800;'>SEVERE HEATWAVE</b><br>12 Districts under High Alert.");
-
-                // PROJECTION 3: Urban Flood Risk (3 Cities) - Matches Urban & Infra Sector
-                const cities = [
-                    { name: "Mumbai", coords: [19.0760, 72.8777] },
-                    { name: "Chennai", coords: [13.0827, 80.2707] },
-                    { name: "Delhi", coords: [28.7041, 77.1025] }
-                ];
-                
-                cities.forEach(city => {
-                    const marker = L.circleMarker(city.coords, {
-                        radius: 8, color: '#ffb4ab', fillColor: '#9c27b0', fillOpacity: 0.9, weight: 2
-                    }).addTo(map);
-                    marker.bindPopup(`<b style='color:#9c27b0;'>${city.name}</b><br>High Urban Flood Risk.`);
-                });
-                
-                // PROJECTION 4: Agriculture Kharif Outlook (Favourable) - Matches Agri Sector
-                // Polygon over Punjab/Haryana/UP
-                const agri = L.polygon([
-                    [31.0, 74.0], [31.0, 76.0], [28.0, 80.0], [26.0, 79.0], [28.0, 74.0]
-                ], {
-                    color: '#4caf50', fillColor: '#4caf50', fillOpacity: 0.2, weight: 1, dashArray: '5, 5'
-                }).addTo(map);
-                agri.bindPopup("<b style='color:#4caf50;'>AGRICULTURE</b><br>Kharif Outlook Favourable (+8%).");
             }
         });
     }
