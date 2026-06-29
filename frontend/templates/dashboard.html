@@ -98,6 +98,8 @@
             if(hiddenBtn) hiddenBtn.click();
         }
     </script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
         body {
             background-color: #131313;
@@ -214,10 +216,8 @@
         <!-- Central Viewport: Deck.gl Map -->
         <div class="flex-1 border-2 border-outline-variant bg-surface relative overflow-hidden flex flex-col">
             <!-- Map Layer -->
-            <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 z-0" id="mock-map-container">
                 {{ embed(roots.map_canvas) }}
-                <!-- FRONTEND MOCKUP ONLY: SRI should delete this image tag during Backend Integration -->
-                <img src="file:///C:/Users/PHK/.gemini/antigravity/brain/bcddbdef-c9d5-49c1-b009-544fc64b3199/india_map_placeholder_1782741860591.png" class="absolute inset-0 w-full h-full object-cover opacity-80" alt="India Map Placeholder">
             </div>
             
             <!-- Top Floating Controls -->
@@ -506,16 +506,70 @@
         setInterval(updateClock, 1000);
         updateClock();
 </script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    // Local Preview Cleanup: Hide raw Jinja tags when opening file directly in browser
+    // Local Preview Cleanup & Mock Map: Only runs when opening file directly in browser
     if (window.location.protocol === 'file:') {
         document.addEventListener("DOMContentLoaded", function() {
+            // Hide Jinja tags
             const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
             let n;
             while(n = walk.nextNode()) {
                 if (n.nodeValue.includes('{') && n.nodeValue.includes('}')) {
                     n.nodeValue = n.nodeValue.replace(/\{[%\{].*?[%\}]\}/g, '');
                 }
+            }
+            
+            // Inject Interactive Leaflet Map for Mockup
+            const mapContainer = document.getElementById('mock-map-container');
+            if (mapContainer) {
+                mapContainer.innerHTML = ''; // Clear Jinja text
+                const map = L.map('mock-map-container', {
+                    center: [21.5, 80.0],
+                    zoom: 5,
+                    zoomControl: false,
+                    attributionControl: false
+                });
+
+                // Dark mode tiles
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+                    maxZoom: 19
+                }).addTo(map);
+
+                // Dummy Projection: Cyclone in Bay of Bengal
+                L.circle([16.0, 88.0], {
+                    color: 'transparent',
+                    fillColor: '#00ffff',
+                    fillOpacity: 0.2,
+                    radius: 500000
+                }).addTo(map);
+                
+                L.circle([16.0, 88.0], {
+                    color: '#ffb4ab',
+                    fillColor: '#93000a',
+                    fillOpacity: 0.6,
+                    radius: 150000
+                }).addTo(map);
+                
+                // Dummy Projection: Heatwave in Northwest India
+                L.polygon([
+                    [29.0, 73.0],
+                    [30.0, 76.0],
+                    [27.0, 78.0],
+                    [25.0, 74.0]
+                ], {
+                    color: '#ff9800',
+                    fillColor: '#ff9800',
+                    fillOpacity: 0.4
+                }).addTo(map);
+                
+                // Dummy Projection: Heavy Rainfall in Kerala
+                L.circle([10.0, 77.0], {
+                    color: '#b1c5ff',
+                    fillColor: '#0b3d91',
+                    fillOpacity: 0.7,
+                    radius: 80000
+                }).addTo(map);
             }
         });
     }
