@@ -1,0 +1,300 @@
+{% extends base %}
+
+{% block postamble %}
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MugizhNokku Twin - Open MCT Glass Cockpit</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-container": "#870f00",
+                        "tertiary-fixed": "#ffdad3",
+                        "on-secondary-fixed": "#002020",
+                        "on-background": "#e5e2e1",
+                        "secondary-container": "#00fbfb",
+                        "on-primary": "#002c71",
+                        "surface-tint": "#b1c5ff",
+                        "surface": "#131313",
+                        "surface-container": "#202020",
+                        "on-primary-fixed-variant": "#144296",
+                        "surface-container-highest": "#353535",
+                        "on-secondary-container": "#007070",
+                        "inverse-surface": "#e5e2e1",
+                        "background": "#131313",
+                        "primary-fixed-dim": "#b1c5ff",
+                        "on-tertiary-fixed": "#3f0300",
+                        "on-tertiary": "#660800",
+                        "inverse-on-surface": "#303030",
+                        "outline-variant": "#434652",
+                        "on-tertiary-fixed-variant": "#8f1000",
+                        "on-primary-fixed": "#001947",
+                        "tertiary": "#ffb4a6",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#00dddd",
+                        "surface-container-high": "#2a2a2a",
+                        "on-error-container": "#ffdad6",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "surface-bright": "#393939",
+                        "secondary-fixed": "#00fbfb",
+                        "surface-dim": "#131313",
+                        "on-surface-variant": "#c4c6d3",
+                        "on-secondary": "#003737",
+                        "inverse-primary": "#345baf",
+                        "primary-container": "#0b3d91",
+                        "primary-fixed": "#dae2ff",
+                        "primary": "#b1c5ff",
+                        "outline": "#8e909d",
+                        "surface-variant": "#353535",
+                        "secondary": "#ffffff",
+                        "surface-container-low": "#1b1b1c",
+                        "on-tertiary-container": "#ff907c",
+                        "on-primary-container": "#8dadff",
+                        "on-surface": "#e5e2e1",
+                        "tertiary-fixed-dim": "#ffb4a6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "touch-target": "48px",
+                        "grid-unit": "4px",
+                        "container-padding": "12px",
+                        "tile-gap": "2px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Inter"],
+                        "data-sm": ["JetBrains Mono"],
+                        "display-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "data-lg": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "data-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-md": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "data-lg": ["24px", { "lineHeight": "32px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+        
+        function triggerNav(tab_name) {
+            const hiddenBtn = document.querySelector('.hidden-' + tab_name + '-btn button');
+            if(hiddenBtn) hiddenBtn.click();
+        }
+    </script>
+<style>
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            overflow: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .flat-border {
+            border: 2px solid #434652;
+        }
+    </style>
+{% endblock %}
+
+{% block contents %}
+<div class="text-on-surface overflow-hidden h-screen w-screen font-body-md flex flex-col bg-background selection:bg-primary-container selection:text-on-primary-container" style="width: 100vw; height: 100vh;">
+
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-container-padding h-touch-target bg-surface dark:bg-surface border-b-2 border-outline-variant shrink-0">
+<div class="flex items-center space-x-4">
+<span class="font-display-md text-display-md font-bold text-primary dark:text-primary">AERO-CLIMATE MONITOR</span>
+</div>
+<div class="hidden md:flex items-center h-full space-x-6">
+<nav class="flex h-full">
+<a onclick="triggerNav('telemetry')" class="flex items-center h-full px-4 text-primary font-bold border-b-2 border-primary pb-1 cursor-pointer">LIVE</a>
+<a onclick="triggerNav('archive')" class="flex items-center h-full px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer">HISTORY</a>
+<a onclick="triggerNav('scenarios')" class="flex items-center h-full px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer">SCENARIOS</a>
+<a class="flex items-center h-full px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer">ALERTS</a>
+</nav>
+</div>
+<div class="flex items-center space-x-4">
+<div class="flex items-center space-x-2 border-2 border-outline-variant px-2 h-8">
+<span class="font-data-sm text-data-sm text-on-surface-variant">UTC</span>
+<span class="font-data-sm text-data-sm text-on-surface" id="utc-clock">00:00:00</span>
+</div>
+<div class="bg-secondary-fixed-dim text-on-secondary-fixed px-2 py-1 font-label-caps text-label-caps uppercase border-2 border-secondary-fixed-dim">
+                [ NOMINAL ]
+            </div>
+<button class="h-touch-target w-touch-target flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="h-touch-target w-touch-target flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-full w-64 bg-surface-container dark:bg-surface-container border-r-2 border-outline-variant py-grid-unit shrink-0">
+<div class="px-container-padding mb-4">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">TELEMETRY SOURCES</h2>
+<p class="font-label-caps text-label-caps text-on-surface-variant">MISSION CONTROL HUB</p>
+</div>
+<div class="flex-1 flex flex-col space-y-tile-gap">
+<a onclick="document.querySelector('.hidden-satellite-btn button').click(); return false;" class="flex items-center h-touch-target px-container-padding text-primary font-bold border-l-2 border-primary bg-surface-container-highest cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="satellite_alt">satellite_alt</span>
+<span class="font-label-caps text-label-caps">SATELLITE</span>
+</a>
+<a onclick="document.querySelector('.hidden-radar-btn button').click(); return false;" class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:bg-surface-container-high border-l-2 border-transparent cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="radar">radar</span>
+<span class="font-label-caps text-label-caps">RADAR</span>
+</a>
+<a class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:bg-surface-container-high border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="sensors">sensors</span>
+<span class="font-label-caps text-label-caps">IOT SENSORS</span>
+</a>
+<a class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:bg-surface-container-high border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="developer_board">developer_board</span>
+<span class="font-label-caps text-label-caps">HARDWARE</span>
+</a>
+<a class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:bg-surface-container-high border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="monitor_heart">monitor_heart</span>
+<span class="font-label-caps text-label-caps">SYSTEM HEALTH</span>
+</a>
+<a class="flex items-center h-touch-target px-container-padding text-on-surface-variant hover:bg-surface-container-high border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps">LOGS</span>
+</a>
+</div>
+<div class="px-container-padding py-4 border-t-2 border-outline-variant">
+<button onclick="document.querySelector('.hidden-run-btn button').click()" class="w-full h-touch-target bg-primary-container text-secondary font-label-caps text-label-caps flex items-center justify-center hover:bg-[#345baf] transition-colors cursor-pointer">
+                    RUN SIMULATION
+                </button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col p-tile-gap gap-tile-gap overflow-hidden bg-background relative">
+<!-- Top Section: Map & Telemetry Panels -->
+<div class="flex-1 flex flex-col lg:flex-row gap-tile-gap min-h-0">
+<!-- Central Viewport: Deck.gl Map -->
+<div class="flex-1 border-2 border-outline-variant bg-surface relative overflow-hidden group flex flex-col">
+<div class="absolute top-2 left-2 z-10 bg-surface/80 p-2 border-2 border-outline-variant backdrop-blur-sm pointer-events-none">
+<span class="font-label-caps text-label-caps text-on-surface">PRECIPITATION INTENSITY [IND]</span>
+</div>
+<div class="flex-1 w-full relative z-0">
+    {{ embed(roots.map_canvas) }}
+</div>
+</div>
+<!-- Right Sidebar: Telemetry Panels Grid -->
+<div class="w-full lg:w-96 flex flex-col gap-tile-gap shrink-0">
+<!-- Hardware Telemetry Tile -->
+<div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col">
+<div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">HARDWARE TELEMETRY</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="developer_board">developer_board</span>
+</div>
+<div class="flex flex-col space-y-4">
+<div class="flex justify-between items-end">
+<span class="font-data-sm text-data-sm text-on-surface-variant">VRAM USAGE</span>
+<span class="font-data-lg text-data-lg text-secondary">82.4%</span>
+</div>
+<div class="flex justify-between items-end">
+<span class="font-data-sm text-data-sm text-on-surface-variant">LATENCY</span>
+<span class="font-data-lg text-data-lg text-secondary">42ms</span>
+</div>
+</div>
+</div>
+<!-- Operational State Tile -->
+<div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col">
+<div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">OPERATIONAL STATE</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="thermostat">thermostat</span>
+</div>
+<div class="flex flex-col pt-2">
+    {{ embed(roots.control_sliders) }}
+</div>
+</div>
+<!-- Datacube Assimilation Tile -->
+<div class="bg-surface-container border-2 border-outline-variant p-container-padding flex flex-col flex-1">
+<div class="flex justify-between items-center border-b-2 border-outline-variant pb-2 mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">DATACUBE ASSIMILATION</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="database">database</span>
+</div>
+<div class="flex-1 flex flex-col justify-center items-center">
+<span class="font-data-lg text-data-lg text-secondary mb-1">{{ embed(roots.peak_intensity) }}</span>
+<span class="font-data-sm text-data-sm text-on-surface-variant">MAX INTENSITY</span>
+<div class="w-full h-4 border-2 border-outline-variant mt-4 bg-surface relative">
+<div class="absolute top-0 left-0 h-full bg-primary" style="width: 78%;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom: Mission Timeline Scrubber -->
+<div class="h-24 bg-surface-container border-2 border-outline-variant shrink-0 flex flex-col p-container-padding">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">MISSION TIMELINE [T-MINUS]</span>
+<span class="font-data-sm text-data-sm text-on-surface-variant">{{ embed(roots.prediction_window) }}</span>
+</div>
+<div class="relative w-full h-8 flex items-center">
+<!-- Timeline Track -->
+<div class="w-full h-1 bg-outline-variant absolute top-1/2 transform -translate-y-1/2"></div>
+<!-- Played Track -->
+<div class="w-1/3 h-1 bg-primary absolute top-1/2 transform -translate-y-1/2 left-0"></div>
+<!-- Scrubber Thumb (No skeuomorphism, just a rigid block) -->
+<div class="w-4 h-full bg-primary border-2 border-secondary absolute left-1/3 cursor-pointer"></div>
+<!-- Tick Marks -->
+<div class="absolute w-full flex justify-between top-full mt-1">
+<span class="font-data-sm text-data-sm text-outline">T-12H</span>
+<span class="font-data-sm text-data-sm text-outline">T-08H</span>
+<span class="font-data-sm text-data-sm text-primary">T-04H</span>
+<span class="font-data-sm text-data-sm text-outline">T-00H</span>
+</div>
+</div>
+</div>
+
+<!-- Modals & Hidden Nodes -->
+<div class="absolute top-4 right-4 z-50 pointer-events-none">
+    {{ embed(roots.alert_modal) }}
+</div>
+{{ embed(roots.loading_overlay) }}
+<div style="display: none;">
+    {{ embed(roots.nav_archive_btn) }}
+    {{ embed(roots.nav_telemetry_btn) }}
+    {{ embed(roots.nav_predict_btn) }}
+    {{ embed(roots.nav_scenarios_btn) }}
+    {{ embed(roots.nav_layers_btn) }}
+    {{ embed(roots.nav_satellite_btn) }}
+    {{ embed(roots.nav_radar_btn) }}
+    {{ embed(roots.run_sim_btn) }}
+</div>
+
+</main>
+</div>
+<script>
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getUTCHours()).padStart(2, '0');
+            const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+            const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+            const clockNode = document.getElementById('utc-clock');
+            if (clockNode) clockNode.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+</script>
+
+</div>
+{% endblock %}
