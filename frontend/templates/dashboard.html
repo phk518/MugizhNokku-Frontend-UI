@@ -540,7 +540,7 @@
                 // Inject Tokenless CartoDB Dark Matter Tileset
                 const cartoDark = new Cesium.ImageryLayer(
                     new Cesium.UrlTemplateImageryProvider({
-                        url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                        url: 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
                         credit: 'Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
                     })
                 );
@@ -552,6 +552,7 @@
                     ellipse: {
                         semiMinorAxis: 400000.0,
                         semiMajorAxis: 400000.0,
+                        height: 0,
                         material: Cesium.Color.fromCssColorString('#93000a').withAlpha(0.6),
                         outline: true,
                         outlineColor: Cesium.Color.fromCssColorString('#ffb4ab')
@@ -568,6 +569,7 @@
                             76.0, 22.0, 
                             70.0, 23.0
                         ]),
+                        height: 0,
                         material: Cesium.Color.fromCssColorString('#ff9800').withAlpha(0.35),
                         outline: true,
                         outlineColor: Cesium.Color.fromCssColorString('#ff9800')
