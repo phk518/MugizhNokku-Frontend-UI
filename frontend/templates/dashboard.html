@@ -98,8 +98,6 @@
             if(hiddenBtn) hiddenBtn.click();
         }
     </script>
-    <script src="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js"></script>
-    <link href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
 <style>
         body {
             background-color: #131313;
@@ -216,7 +214,7 @@
         <!-- Central Viewport: Deck.gl Map -->
         <div class="flex-1 border-2 border-outline-variant bg-surface relative overflow-hidden flex flex-col">
             <!-- Map Layer -->
-            <div class="absolute inset-0 z-0" id="mock-map-container">
+            <div class="absolute inset-0 z-0">
                 {{ embed(roots.map_canvas) }}
             </div>
             
@@ -507,97 +505,15 @@
         updateClock();
 </script>
 <script>
-    // Local Preview Cleanup & Mock Map: Only runs when opening file directly in browser
+    // Local Preview Cleanup: Hide raw Jinja tags when opening file directly in browser
     if (window.location.protocol === 'file:') {
         document.addEventListener("DOMContentLoaded", function() {
-            // Hide Jinja tags
             const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
             let n;
             while(n = walk.nextNode()) {
                 if (n.nodeValue.includes('{') && n.nodeValue.includes('}')) {
                     n.nodeValue = n.nodeValue.replace(/\{[%\{].*?[%\}]\}/g, '');
                 }
-            }
-            
-            // Inject Interactive CesiumJS Globe for Mockup
-            const mapContainer = document.getElementById('mock-map-container');
-            if (mapContainer && typeof Cesium !== 'undefined') {
-                mapContainer.innerHTML = ''; // Clear Jinja text
-                
-                // Initialize Viewer as a pure mathematical globe (No external map tiles needed)
-                const viewer = new Cesium.Viewer('mock-map-container', {
-                    imageryProvider: false, // Disables Bing Maps / Ion requirements
-                    baseLayerPicker: false,
-                    timeline: false,
-                    animation: false,
-                    geocoder: false,
-                    navigationHelpButton: false,
-                    infoBox: false,
-                    selectionIndicator: false,
-                    sceneModePicker: false
-                });
-
-                // Paint the naked globe dark gray so it stands out against the starry sky
-                viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#1a1a1a');
-                
-                // Cyclone (Warning Red)
-                viewer.entities.add({
-                    position: Cesium.Cartesian3.fromDegrees(89.0, 15.5),
-                    ellipse: {
-                        semiMinorAxis: 400000.0,
-                        semiMajorAxis: 400000.0,
-                        height: 0, // explicitly place on surface
-                        material: Cesium.Color.fromCssColorString('#93000a').withAlpha(0.6),
-                        outline: true,
-                        outlineColor: Cesium.Color.fromCssColorString('#ffb4ab')
-                    }
-                });
-                
-                // Heatwave (Amber/Orange)
-                viewer.entities.add({
-                    polygon: {
-                        hierarchy: Cesium.Cartesian3.fromDegreesArray([
-                            70.0, 28.0, 
-                            75.0, 29.0, 
-                            78.0, 26.0, 
-                            76.0, 22.0, 
-                            70.0, 23.0
-                        ]),
-                        height: 0, // explicitly place on surface
-                        material: Cesium.Color.fromCssColorString('#ff9800').withAlpha(0.35),
-                        outline: true,
-                        outlineColor: Cesium.Color.fromCssColorString('#ff9800')
-                    }
-                });
-
-                // Cities (Flood Risk)
-                const cities = [
-                    { lon: 72.8777, lat: 19.0760 },
-                    { lon: 80.2707, lat: 13.0827 },
-                    { lon: 77.1025, lat: 28.7041 }
-                ];
-                cities.forEach(city => {
-                    viewer.entities.add({
-                        position: Cesium.Cartesian3.fromDegrees(city.lon, city.lat),
-                        point: {
-                            pixelSize: 14,
-                            color: Cesium.Color.fromCssColorString('#9c27b0'),
-                            outlineColor: Cesium.Color.fromCssColorString('#ffb4ab'),
-                            outlineWidth: 2
-                        }
-                    });
-                });
-
-                // Fly to India with -45 degree pitch
-                viewer.camera.flyTo({
-                    destination: Cesium.Cartesian3.fromDegrees(78.0, 10.0, 5000000.0),
-                    orientation: {
-                        heading: 0.0,
-                        pitch: -Math.PI / 4,
-                        roll: 0.0
-                    },
-                    duration: 3
-                });
             }
         });
     }
